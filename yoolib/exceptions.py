@@ -1,0 +1,2 @@
+class YooError(Exception):
+    pass

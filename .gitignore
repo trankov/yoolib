@@ -1,8 +1,10 @@
 ___*
 __pycache__/
 .DS_Store
+.vscode/
 *.ipynb
 bin/
 include/
 lib/
 pyvenv.cfg
+venv*/
