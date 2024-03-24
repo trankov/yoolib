@@ -6,9 +6,9 @@ from . import enums, repository
 class CurrencyModel(BaseModel):
     entity: str
     currency: str
-    alphabetic_code: enums.CurrencyCode
-    numeric_code: enums.CurrencyNum
-    minors_unit: int
+    code: enums.CurrencyCode
+    num: enums.CurrencyNum
+    minors: int
 
     @classmethod
     def get(cls, **kwargs) -> 'CurrencyModel | None':

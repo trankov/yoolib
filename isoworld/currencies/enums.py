@@ -791,7 +791,6 @@ class CurrencyEntity(StrEnum):
     SOLOMON_ISLANDS = 'SBD'
     SOMALIA = 'SOS'
     SOUTH_AFRICA = 'ZAR'
-    SOUTH_GEORGIA_AND_THE_SOUTH_SANDWICH_ISLANDS = ''
     SOUTH_SUDAN = 'SSP'
     SPAIN = 'EUR'
     SRI_LANKA = 'LKR'
