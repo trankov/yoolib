@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 
 from . import requisite_models as rm
-from .core_models import FieldInstance, ServiceData
+from .core_models import BankingDetails, FieldInstance, ServiceData
 from .serializers import BillSerializer
 
 
@@ -71,6 +71,10 @@ class GostBill:
             if isinstance(i[1], Requisite)
         ]
 
+    @property
+    def _definitions_declared(self) -> set[str]:
+        return {i.model.definition for i in self}
+
     def __len__(self) -> int:
         return len(self._fieldnames)
 
@@ -98,9 +102,21 @@ class GostBill:
         )
 
     def __bytes__(self) -> bytes:
-        encoding = ('cp1251', 'utf_8', 'koi8_r')[int(self.service_data.encoding) - 1]
+        encoding = ('cp1251', 'utf-8', 'koi8_r')[int(self.service_data.encoding) - 1]
         return str(self).encode(encoding=encoding)
 
     @property
     def serializer(self) -> BillSerializer:
         return BillSerializer(self)
+
+    @property
+    def required_satisfied(self) -> bool:
+        return BankingDetails.REQUIRED.issubset(self._definitions_declared)
+
+    @property
+    def additional_satisfied(self) -> bool:
+        return BankingDetails.ADDITIONAL.issubset(self._definitions_declared)
+
+    @property
+    def definitions_correct(self) -> bool:
+        return self._definitions_declared.issubset(BankingDetails.full_set())
