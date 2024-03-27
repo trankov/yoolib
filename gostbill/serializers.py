@@ -36,7 +36,7 @@ class BillSerializer:
     def serialize(self) -> dict:
         return {
             'name': self.bill.__class__.__name__,
-            'encoding': ('cp1251', 'utf_8', 'koi8_r')[
+            'encoding': ('cp1251', 'utf-8', 'koi8-r')[
                 int(self.bill.service_data.encoding) - 1
             ],
             'description': self.bill.__doc__ or '',

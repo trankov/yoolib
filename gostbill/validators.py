@@ -91,9 +91,9 @@ def digits_only(value: str) -> str:
     return ''.join(i for i in value if i.isdigit())
 
 
-def make_non_empty(value: Any) -> str:
+def make_non_empty(value: Any, default: str = 'Не указано') -> str:
     value = cast(value, str)
-    return value or 'Не указано'
+    return value or default
 
 
 def Name(name: Any) -> str:

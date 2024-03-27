@@ -16,6 +16,19 @@ class RequisiteModel:
     required: bool
     validator: Callable
 
+    def __repr__(self) -> str:
+        return (
+            f'{self.__class__.__name__}('
+            f'definition={self.definition!r}, '
+            f'short={self.short!r}, '
+            f'long={self.long!r}, '
+            f'required={self.required!r}, '
+            f'validator={self.validator.__module__}.{self.validator.__name__}'
+            f')'
+        )
+
+
+# Обязательные реквизиты, определённые в блоке Payee УФЭБС
 
 Name: RequisiteModel = RequisiteModel(
     definition='Name',
