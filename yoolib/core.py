@@ -2,7 +2,7 @@ from functools import singledispatchmethod
 from uuid import UUID
 
 from . import models
-from .builders import NewPaymentBuilder
+from .builders.new_payment import NewPaymentBuilder
 from .client import YooClient, yoo_client
 from .exceptions import YooError
 
@@ -13,7 +13,7 @@ class YooPayment:
 
     Принимает
     - либо id платежа в виде строки или UUID;
-    - либо объект `NewPayment` из `yoolib.schemas`.
+    - либо объект `NewPayment` из `yoolib.models.payments`.
 
     При инициализации делает запрос к API YooKassa и получает используемый
     в нём объект платежа (Payment). В случае, если передан id, запускается
@@ -96,11 +96,11 @@ class YooPayment:
         try:
             _ = UUID(hex=payment_arg, version=4)
         except ValueError as err:
-            raise YooError(f"Invalid payment id: {payment_arg}") from err #.as_status(422) from err
+            raise YooError(f"Invalid payment id: {payment_arg}").as_status(422) from err
         self.get_payment(payment_arg)
 
     @_post_init.register
-    def _create(self, payment_arg: UUID):
+    def _(self, payment_arg: UUID):
         self.get_payment(str(payment_arg))
 
     @_post_init.register
@@ -171,14 +171,14 @@ class YooPayment:
         sources = None
         if source_shop_id:
             sources = (
-                models.refund.RefundSource(account_id=source_shop_id, amount=amount_),
+                models.refunds.RefundSource(account_id=source_shop_id, amount=amount_),
             )
         else:
             _transfers = getattr(self.state, "transfers", None)
             if _transfers and len(_transfers):
                 sources = (
-                    models.refund.RefundSource(
-                        account_id=self.state.transfers[0].get("account_id"),
+                    models.refunds.RefundSource(
+                        account_id=self.state.transfers[0].get("account_id"),  # type: ignore
                         amount=amount_,
                     ),
                 )
@@ -196,7 +196,4 @@ class YooPayment:
             self._client = yoo_client()
         return self._client
 
-    @classmethod
-    @property
-    def builder(cls) -> type[NewPaymentBuilder]:
-        return NewPaymentBuilder
+    builder = NewPaymentBuilder

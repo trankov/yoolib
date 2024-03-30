@@ -1,9 +1,11 @@
+from collections.abc import Sequence
 from datetime import datetime
-from typing import Literal, Sequence
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
-import payments.yoolib2.schemas.common as common
+from .common import Amount, CancellationDetails, PaymentStatus
+from .receipts import Receipt
 
 
 class RefundSource(BaseModel):
@@ -16,17 +18,18 @@ class RefundSource(BaseModel):
     https://yookassa.ru/developers/api?codeLang=python#create_refund_sources
 
     """
+
     account_id: str = Field(
         ...,
         description="Идентификатор магазина, для которого вы хотите провести "
         "возврат. Выдается ЮKassa, отображается в разделе Продавцы личного "
         "кабинета (столбец shopId).",
     )
-    amount: common.Amount = Field(
+    amount: Amount = Field(
         ...,
         description="Сумма возврата.",
     )
-    platform_fee_amount: common.Amount | None = Field(
+    platform_fee_amount: Amount | None = Field(
         default=None,
         description="Комиссия, которую вы удержали при оплате, и хотите вернуть.",
     )
@@ -49,7 +52,7 @@ class RefundSettlements(BaseModel):
         description="Тип операции. Фиксированное значение: "
         "'payout' — выплата продавцу.",
     )
-    amount: common.Amount = Field(
+    amount: Amount = Field(
         ...,
         description="Сумма, на которую необходимо уменьшить вознаграждение "
         "продавца. Должна быть меньше суммы возврата или равна ей.",
@@ -63,20 +66,20 @@ class RefundDeal(BaseModel):
 
 class RefundBaseModel(BaseModel):
     payment_id: str = Field(..., min_length=36, max_length=36)
-    amount: common.Amount
+    amount: Amount
     description: str | None = None
     sources: Sequence[RefundSource] | None = None
 
 
 class RefundRequest(RefundBaseModel):
-    receipt: common.Receipt | None = None
+    receipt: Receipt | None = None
     deal: Sequence[RefundSettlements] | None = None
 
 
 class RefundModel(RefundBaseModel):
     id: str
-    status: common.PAYMENT_STATUS_TYPES
+    status: PaymentStatus
     created_at: datetime
-    cancellation_details: common.CancellationDetails | None
-    receipt_registration: common.PAYMENT_STATUS_TYPES | None
+    cancellation_details: CancellationDetails | None
+    receipt_registration: PaymentStatus | None
     deal: Sequence[RefundDeal] | None

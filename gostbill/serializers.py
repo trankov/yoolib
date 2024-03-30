@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from .core import GostBill
+    from .core import GostBill, GostBillType
     from .core_models import FieldInstance
 
 
@@ -36,9 +36,7 @@ class BillSerializer:
     def serialize(self) -> dict:
         return {
             'name': self.bill.__class__.__name__,
-            'encoding': ('cp1251', 'utf-8', 'koi8-r')[
-                int(self.bill.service_data.encoding) - 1
-            ],
+            'encoding': self.bill.service_data.encoding.codepage,
             'description': self.bill.__doc__ or '',
             'fields': [
                 self.bill[field].serialize()

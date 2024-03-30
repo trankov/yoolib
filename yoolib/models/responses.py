@@ -2,7 +2,8 @@ from typing import Literal, Sequence, TypeAlias
 
 from pydantic import BaseModel
 
-from payments.yoolib2.schemas import Amount, PAYMENT_METHOD_TYPES
+from .common import Amount
+from .methods import PAYMENT_METHOD_TYPES
 
 
 class YooInfoOutModel(BaseModel):

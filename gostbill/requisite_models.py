@@ -23,7 +23,8 @@ class RequisiteModel:
             f'short={self.short!r}, '
             f'long={self.long!r}, '
             f'required={self.required!r}, '
-            f'validator={self.validator.__module__}.{self.validator.__name__}'
+            # f'validator={self.validator.__module__}.{self.validator.__name__}'
+            f'validator={self.validator.__qualname__}'
             f')'
         )
 

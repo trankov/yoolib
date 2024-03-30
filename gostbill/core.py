@@ -1,4 +1,5 @@
 from types import SimpleNamespace
+from typing import TypeVar
 
 from . import requisite_models as rm
 from .core_models import BankingDetails, FieldInstance, ServiceData
@@ -102,8 +103,7 @@ class GostBill:
         )
 
     def __bytes__(self) -> bytes:
-        encoding = ('cp1251', 'utf-8', 'koi8_r')[int(self.service_data.encoding) - 1]
-        return str(self).encode(encoding=encoding)
+        return str(self).encode(encoding=self.service_data.encoding.codepage)
 
     @property
     def serializer(self) -> BillSerializer:
@@ -120,3 +120,6 @@ class GostBill:
     @property
     def definitions_correct(self) -> bool:
         return self._definitions_declared.issubset(BankingDetails.full_set())
+
+
+GostBillType = TypeVar('GostBillType', bound=GostBill)

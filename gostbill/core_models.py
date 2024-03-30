@@ -13,7 +13,7 @@ class FieldInstance:
     value: str | int | float | None
 
     def serialize(self, serializer: Callable = FieldSerializer):
-        # Serializer must get a FieldInstance and return a dict
+        # Serializer must get a FieldInstance and return a dict (or other Type)
         return serializer(self).serialize()
 
 
@@ -23,6 +23,10 @@ class ServiceData:
         WIN1251 = '1'
         UTF8 = '2'
         KOI8_R = '3'
+
+        @property
+        def codepage(self) -> str:
+            return ('cp1251', 'utf-8', 'koi8-r')[int(self.value) - 1]
 
     class FormatID(StrEnum):
         ST = 'ST'

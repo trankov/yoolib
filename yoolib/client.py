@@ -1,19 +1,17 @@
 import platform
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, NamedTuple
+from typing import NamedTuple
 from uuid import UUID, uuid4
 
-import requests
-
-
-from requests.adapters import HTTPAdapter
-from requests.auth import _basic_auth_str
-from urllib3 import Retry
-
-from .exceptions import YooError
+import niquests as requests
+from niquests.adapters import HTTPAdapter
+from niquests.auth import _basic_auth_str
+from urllib3_future import Retry
 
 from . import models
+from .exceptions import YooError
 
 
 class YooPoints(NamedTuple):
@@ -244,58 +242,58 @@ class YooClient:
         #     ) from None
         return response.json()
 
-    def info(self) -> models.YooInfoOutModel:
-        endpoint = self.endpoints.info()
-        response = self.connection.get(endpoint)
-        verified_response = self._process_response(response)
-        return models.YooInfoOutModel(**verified_response)
+    # def info(self) -> models.YooInfoOutModel:
+    #     endpoint = self.endpoints.info()
+    #     response = self.connection.get(endpoint)
+    #     verified_response = self._process_response(response)
+    #     return models.YooInfoOutModel(**verified_response)
 
-    def pay(self, payment: models.NewPayment) -> models.Payment:
-        endpoint = self.endpoints.pay()
-        response = self.connection.post(endpoint, body=payment.json())
-        verified_response = self._process_response(response)
-        return models.Payment(**verified_response)
+    # def pay(self, payment: models.NewPayment) -> models.Payment:
+    #     endpoint = self.endpoints.pay()
+    #     response = self.connection.post(endpoint, body=payment.json())
+    #     verified_response = self._process_response(response)
+    #     return models.Payment(**verified_response)
 
     def payments(self) -> dict:
         return self.connection.get(self.endpoints.payments()).json()
 
-    def payment(self, payment_id: str | UUID) -> models.Payment:
-        endpoint = self.endpoints.payment(payment_id)
-        response = self.connection.get(endpoint)
-        verified_response = self._process_response(response)
-        return models.Payment(**verified_response)
+    # def payment(self, payment_id: str | UUID) -> models.Payment:
+    #     endpoint = self.endpoints.payment(payment_id)
+    #     response = self.connection.get(endpoint)
+    #     verified_response = self._process_response(response)
+    #     return models.Payment(**verified_response)
 
-    def capture(
-        self, payment_id: str | UUID, amount: models.Amount | None = None
-    ) -> models.Payment:
-        endpoint = self.endpoints.capture(payment_id)
-        response = self.connection.post(
-            endpoint, body=amount.json() if amount else None
-        )
-        verified_response = self._process_response(response)
-        return models.Payment(**verified_response)
+    # def capture(
+    #     self, payment_id: str | UUID, amount: models.Amount | None = None
+    # ) -> models.Payment:
+    #     endpoint = self.endpoints.capture(payment_id)
+    #     response = self.connection.post(
+    #         endpoint, body=amount.json() if amount else None
+    #     )
+    #     verified_response = self._process_response(response)
+    #     return models.Payment(**verified_response)
 
-    def cancel(self, payment_id: str | UUID) -> models.Payment:
-        endpoint = self.endpoints.cancel(payment_id)
-        response = self.connection.post(endpoint)
-        verified_response = self._process_response(response)
-        return models.Payment(**verified_response)
+    # def cancel(self, payment_id: str | UUID) -> models.Payment:
+    #     endpoint = self.endpoints.cancel(payment_id)
+    #     response = self.connection.post(endpoint)
+    #     verified_response = self._process_response(response)
+    #     return models.Payment(**verified_response)
 
     def refunds(self, **kwargs):
         # https://yookassa.ru/developers/api?codeLang=bash#get_refunds_list
         raise NotImplementedError
 
-    def refund(self, refund_request: models.RefundRequest) -> models.RefundModel:
-        endpoint = self.endpoints.refund()
-        response = self.connection.post(endpoint, body=refund_request.json())
-        verified_response = self._process_response(response)
-        return models.RefundModel(**verified_response)
+    # def refund(self, refund_request: models.RefundRequest) -> models.RefundModel:
+    #     endpoint = self.endpoints.refund()
+    #     response = self.connection.post(endpoint, body=refund_request.json())
+    #     verified_response = self._process_response(response)
+    #     return models.RefundModel(**verified_response)
 
-    def refund_status(self, refund_id: str | UUID) -> models.RefundModel:
-        endpoint = self.endpoints.refund_status(refund_id)
-        response = self.connection.get(endpoint)
-        verified_response = self._process_response(response)
-        return models.RefundModel(**verified_response)
+    # def refund_status(self, refund_id: str | UUID) -> models.RefundModel:
+    #     endpoint = self.endpoints.refund_status(refund_id)
+    #     response = self.connection.get(endpoint)
+    #     verified_response = self._process_response(response)
+    #     return models.RefundModel(**verified_response)
 
     # def payouts(self):
     #     raise NotImplementedError
