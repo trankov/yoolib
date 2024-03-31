@@ -1,4 +1,4 @@
-from ..models.confirmations import (
+from ..models.payments.confirmations import (
     PaymentConfirmationTypes,
     get_confirmation_in_model,
 )

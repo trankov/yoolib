@@ -4,10 +4,14 @@ from ..models.payments.airline import Passenger
 
 
 class AddPassengers:
-    def __init__(self, passengers: Sequence[tuple[str, str]]):
-        self.passengers = passengers
+    """
+    Передаётся набор кортежей типа ('NAME', 'SURNAME').
+    """
 
-    def __get__(self, instance, owner):
+    def __init__(self, *args):
+        self.passengers = args
+
+    def __get__(self, instance, owner) -> list[Passenger]:
         return [
             Passenger(
                 first_name=first_name,

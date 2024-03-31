@@ -2,10 +2,10 @@ from collections.abc import Sequence
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ..common import Amount
-from ..confirmations import ConfirmationInModels
-from ..receipts import Receipt
+from ..common.amount import Amount
+from ..receipts.___receipts import Receipt
 from .airline import AirTicket
+from .confirmations import ConfirmationInModels
 from .deal import Deal
 from .docs import DOCS
 from .fraud_data import FraudData

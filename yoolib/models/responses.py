@@ -2,7 +2,7 @@ from typing import Literal, Sequence, TypeAlias
 
 from pydantic import BaseModel
 
-from .common import Amount
+from .common.___common import Amount
 from .methods import PAYMENT_METHOD_TYPES
 
 

@@ -3,9 +3,9 @@ from collections.abc import Sequence
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..common import Amount, CancellationDetails, PaymentStatus
-from ..confirmations import ConfirmationOutModels
-from ..receipts import ReceiptRegistration
+from ..receipts.___receipts import ReceiptRegistration
 from .authorization_details import AuthorizationDetails
+from .confirmations import ConfirmationOutModels
 from .deal import Deal
 from .docs import DOCS
 from .metadata import Metadata

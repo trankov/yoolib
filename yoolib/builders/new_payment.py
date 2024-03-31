@@ -1,10 +1,11 @@
 from dataclasses import dataclass
 
-from ..models.common import Amount
-from ..models.confirmations import PaymentConfirmationTypes
+from ..models.common import Amount, Customer
 from ..models.payments.airline import AirTicket, Leg, Passenger
+from ..models.payments.confirmations import PaymentConfirmationTypes
 from ..models.payments.payment_method import PaymentMethodType
 from ..models.payments.recipient import Recipient
+from ..models.receipts.payment_receipt import PaymentReceipt
 from .airline import AddPassengers
 from .confirmation import AddConfirmation
 from .payment_method_data import AddPaymentMethodData
@@ -21,7 +22,8 @@ class bricks:
     """
 
     amount = Amount
-    receipt = None
+    customer = Customer
+    receipt = PaymentReceipt
     recipient = Recipient
     payment_method_data = AddPaymentMethodData
     confirmation = AddConfirmation
@@ -43,7 +45,16 @@ if __name__ == '__main__':
     new_payment = NewPayment(
         amount=bricks.amount(value=100),
         description='test',
-        receipt=bricks.receipt,
+        receipt=bricks.receipt(
+            customer=bricks.customer(
+                email='ivan@yookassa.ru',
+                full_name='Ivan Petrov',
+            ),
+            items=[],
+            tax_system_code=None,
+            receipt_industry_details=None,
+            receipt_operational_details=None,
+        ),
         recipient=bricks.recipient(account_id='123', gateway_id='321'),
         confirmation=bricks.confirmation(
             confirmation_type=bricks.PaymentConfirmationTypes.REDIRECT,
@@ -51,4 +62,22 @@ if __name__ == '__main__':
         ),
         capture=True,
         metadata={'key': 'value'},
-    )  # type: ignore
+        airline=bricks.airline(
+            ticket_number='123',
+            booking_reference='321',
+            legs=[
+                bricks.airline_leg(
+                    departure_airport='SVO',
+                    destination_airport='LED',
+                    departure_date='2022-01-01',
+                    carrier_code='SU',
+                )
+            ],
+            passengers=[
+                bricks.airline_passenger(first_name='STEPAN', last_name='IVANOV'),
+                bricks.airline_passenger(first_name='VIKTORIA', last_name='IVANOVA'),
+            ]
+        ),
+        deal=None,
+        merchant_customer_id=None,
+    )

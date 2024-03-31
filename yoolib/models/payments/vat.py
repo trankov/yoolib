@@ -3,7 +3,7 @@ from typing import TypeAlias
 
 from pydantic import BaseModel, Field
 
-from ..common import Amount
+from ..common.amount import Amount
 
 
 class VatCalculationMode(StrEnum):

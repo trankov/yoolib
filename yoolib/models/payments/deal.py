@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from ..common import Amount
+from ..common.amount import Amount
 
 
 class Settlement(BaseModel):

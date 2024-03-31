@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from ..common import Amount
+from ..common.amount import Amount
 from .docs import DOCS
 from .metadata import Metadata
 
