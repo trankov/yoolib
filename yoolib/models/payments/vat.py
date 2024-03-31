@@ -71,6 +71,10 @@ def get_vat_data_model(
     payment_method_type: VatCalculationMode,
 ) -> type[AbstractVatData] | None:
     return next(
-        (i for i in AbstractVatData.__subclasses__() if i.type == payment_method_type),
+        (
+            i
+            for i in AbstractVatData.__subclasses__()
+            if i.model_fields['type'].default == payment_method_type
+        ),
         None,
     )

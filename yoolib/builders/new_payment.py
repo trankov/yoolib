@@ -1,60 +1,54 @@
-from collections.abc import Callable
-from typing import Any, Self
+from dataclasses import dataclass
 
-from isoworld.currencies import CurrencyCode
-
+from ..models.common import Amount
 from ..models.confirmations import PaymentConfirmationTypes
-from ..models.payments.new_payment import NewPayment
-from . import (
-    amount as amount_builder,
-    payment_method_data as payment_method_data_builder,
-    recipient as recipient_builder,
-)
+from ..models.payments.airline import AirTicket, Leg, Passenger
+from ..models.payments.payment_method import PaymentMethodType
+from ..models.payments.recipient import Recipient
+from .airline import AddPassengers
+from .confirmation import AddConfirmation
+from .payment_method_data import AddPaymentMethodData
 
 
-class NewPaymentBuilder:
-# pylint: disable=too-many-instance-attributes
+@dataclass(frozen=True, slots=True, eq=False, init=False)
+class bricks:
+    """
+    Кирпичики для создания нового платежа. Одноимённый метод содержит ссылку
+    на класс Pydantic или переопределяющий дескриптор со входными параметрами.
 
-    amount = None
-    recipient = None
-    payment_method_data = None
+    Если входной параметр требует выражение Enum, одноименные алиасы на них
+    содержатся здесь же.
+    """
 
-    add_amount = amount_builder.add_amount
-    add_recipient = recipient_builder.add_recipient
-    add_payment_method_data = payment_method_data_builder.add_payment_method_data
+    amount = Amount
+    receipt = None
+    recipient = Recipient
+    payment_method_data = AddPaymentMethodData
+    confirmation = AddConfirmation
+    airline = AirTicket
+    airline_leg = Leg
+    airline_passenger = Passenger
+    airline_passengers = AddPassengers
 
-    def __init__(
-        self,
-        use_confirmation: PaymentConfirmationTypes = PaymentConfirmationTypes.EMBEDDED,
-        confirmation_url: str = '',
-        use_currency: CurrencyCode = CurrencyCode.RUB,
-    ) -> None:
-        self.use_currency = use_currency
-        self.confirmation_url = confirmation_url
-        self.use_confirmation = use_confirmation
+    PaymentConfirmationTypes = PaymentConfirmationTypes
+    PaymentMethodType = PaymentMethodType
 
-    def add_simple_scope(
-        self,
-        amount: float | None = None,
-        description: str | None = None,
-        payment_token: str | None = None,
-        payment_method_id: str | None = None,
-        save_payment_method: bool | None = None,
-        capture: bool | None = None,
-        client_ip: str | None = None,
-    ):
-        if amount:
-            self.add_amount(value=amount, currency=self.use_currency)
-        self.description = description
-        self.payment_token = payment_token
-        self.payment_method_id = payment_method_id
-        self.save_payment_method = save_payment_method
-        self.capture = capture
-        self.client_ip = client_ip
 
-    def create(self) -> dict:
-        return {
-            'amount': self.amount,
-            'recipient': self.recipient,
-            'payment_method_data': self.payment_method_data,
-        }
+NewPaymentBuilder = None
+
+
+if __name__ == '__main__':
+    from ..models.payments.new_payment import NewPayment
+
+    new_payment = NewPayment(
+        amount=bricks.amount(value=100),
+        description='test',
+        receipt=bricks.receipt,
+        recipient=bricks.recipient(account_id='123', gateway_id='321'),
+        confirmation=bricks.confirmation(
+            confirmation_type=bricks.PaymentConfirmationTypes.REDIRECT,
+            return_url='321',
+        ),
+        capture=True,
+        metadata={'key': 'value'},
+    )  # type: ignore

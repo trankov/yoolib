@@ -19,6 +19,7 @@ class Locales(StrEnum):
 
 # Input Shemas
 
+
 class ConfirmationBaseInModel(BaseModel):
     type: PaymentConfirmationTypes
     locale: Locales | None = Locales.RU
@@ -51,6 +52,18 @@ class ConfirmationRedirectInModel(ConfirmationBaseInModel):
     type: PaymentConfirmationTypes = PaymentConfirmationTypes.REDIRECT
     enforce: bool | None = False
     return_url: str = Field(..., max_length=2048)
+
+
+def get_confirmation_in_model(
+    confirmation_type: PaymentConfirmationTypes,
+) -> type[ConfirmationBaseInModel] | None:
+    return {
+        PaymentConfirmationTypes.EMBEDDED: ConfirmationEmbeddedInModel,
+        PaymentConfirmationTypes.EXTERNAL: ConfirmationExternalInModel,
+        PaymentConfirmationTypes.QR: ConfirmationQRcodeInModel,
+        PaymentConfirmationTypes.MOBILE_APPLICATION: ConfirmationMobileApplicationInModel,
+        PaymentConfirmationTypes.REDIRECT: ConfirmationRedirectInModel,
+    }.get(confirmation_type)
 
 
 # Output Shemas

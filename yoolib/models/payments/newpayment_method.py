@@ -87,7 +87,7 @@ def get_newpayment_method_data_model(
         (
             i
             for i in AbstractPaymentMethodData.__subclasses__()
-            if i.type == payment_method_type
+            if i.model_fields['type'].default == payment_method_type
         ),
         None,
     )
