@@ -1,2 +1,4 @@
+email-validator
+niquests
 pydantic
 pydantic-settings
