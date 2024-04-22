@@ -1,2 +1,1 @@
-# from .client import yoo_client
-# from .core import YooPayment
+__version__ = "0.2.0 (development)"

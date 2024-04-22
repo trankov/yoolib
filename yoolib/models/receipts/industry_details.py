@@ -4,7 +4,6 @@ from pydantic import BaseModel, Field
 class ReceiptIndustryDetails(BaseModel):
     """
     Отраслевой реквизит предмета расчета 54ФЗ.1260
-
     Обязателен при использовании ФФД 1.2.
     """
 

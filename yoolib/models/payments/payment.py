@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..common import Amount, CancellationDetails, PaymentStatus
-from ..receipts.___receipts import ReceiptRegistration
+from ..receipts.definitions import ReceiptStatus
 from .authorization_details import AuthorizationDetails
 from .confirmations import ConfirmationOutModels
 from .deal import Deal
@@ -51,7 +51,7 @@ class Payment(BaseModel):
     )
     paid: bool
     refundable: bool = Field(description=DOCS.Payment.refundable)
-    receipt_registration: ReceiptRegistration | None = Field(
+    receipt_registration: ReceiptStatus | None = Field(
         None, description=DOCS.Payment.receipt_registration
     )
     metadata: Metadata | None = None

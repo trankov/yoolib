@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..common.amount import Amount
-from ..receipts.___receipts import Receipt
+from ..receipts.payment_receipt import PaymentReceipt
 from .airline import AirTicket
 from .confirmations import ConfirmationInModels
 from .deal import Deal
@@ -29,7 +29,7 @@ class NewPayment(BaseModel):
 
     amount: Amount
     description: str | None = Field(max_length=128, default=None)
-    receipt: Receipt | None = None
+    receipt: PaymentReceipt | None = None
     recipient: Recipient | None = None
     payment_token: str | None = None
     payment_method_id: str | None = None

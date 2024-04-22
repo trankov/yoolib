@@ -11,7 +11,8 @@ from .payment_item import ReceiptPaymentItem
 
 class PaymentReceipt(BaseModel):
     """
-    Данные для формирования чека в онлайн-кассе (для соблюдения 54-ФЗ).
+    Данные для формирования чека при создании объекта платежа.
+
     https://yookassa.ru/developers/api#create_payment_receipt
     """
 

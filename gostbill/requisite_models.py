@@ -5,7 +5,6 @@ from . import validators
 
 
 # ГОСТ Р 56042-2014 § 5.2.3
-# Обязательные реквизиты (блок «Payee» УФЭБС)
 
 
 @dataclass(frozen=True, slots=True)

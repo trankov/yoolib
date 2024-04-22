@@ -59,7 +59,7 @@ if __name__ == '__main__':
         confirmation=bricks.confirmation(
             confirmation_type=bricks.PaymentConfirmationTypes.REDIRECT,
             return_url='321',
-        ),
+        ),  # type: ignore
         capture=True,
         metadata={'key': 'value'},
         airline=bricks.airline(

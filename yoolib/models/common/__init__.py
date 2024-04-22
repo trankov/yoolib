@@ -14,6 +14,3 @@ from .definitions import (
     PaymentSubject,
     VATRateNum,
 )
-from .payment_item import (
-    PaymentItem,
-)

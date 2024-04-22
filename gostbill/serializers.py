@@ -35,6 +35,7 @@ class BillSerializer:
 
     def serialize(self) -> dict:
         return {
+            'qr': str(self.bill),
             'name': self.bill.__class__.__name__,
             'encoding': self.bill.service_data.encoding.codepage,
             'description': self.bill.__doc__ or '',

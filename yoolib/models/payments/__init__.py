@@ -8,21 +8,8 @@ from .authorization_details import (
     Secure3D,
 )
 from .confirmations import (
-    ConfirmationBaseInModel,
-    ConfirmationBaseOutModel,
-    ConfirmationEmbeddedInModel,
-    ConfirmationEmbeddedOutModel,
-    ConfirmationExternalInModel,
-    ConfirmationExternalOutModel,
     ConfirmationInModels,
-    ConfirmationMobileApplicationInModel,
-    ConfirmationMobileApplicationOutModel,
     ConfirmationOutModels,
-    ConfirmationQRcodeInModel,
-    ConfirmationQRcodeOutModel,
-    ConfirmationRedirectInModel,
-    ConfirmationRedirectOutModel,
-    Locales,
     PaymentConfirmationTypes,
     get_confirmation_in_model,
 )
